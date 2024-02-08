@@ -4,84 +4,113 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 import javax.swing.border.EmptyBorder;
 
 
 public class ChatClient extends JFrame
 implements ActionListener {
-	JTextField tf_ChatMb, tf_Write; //ì°¸ê°€ì, ì±„íŒ…ì‘ì„±
-	JButton btn_send, btn_close;  // ì „ì†¡, ìƒë‹´ì¢…ë£Œ ë²„íŠ¼
-	JTextArea ta_Chat; // ì±„íŒ… ë‚´ìš©ì°½
-	JLabel lbl_ChatMb; // ë¼ë²¨(ì°¸ê°€ìëª…, )
-	
+	JTextField tf_ChatMb, tf_Write; //Âü°¡ÀÚ, Ã¤ÆÃÀÛ¼º
+	JButton btn_send, btn_close;  // Àü¼Û, »ó´ãÁ¾·á ¹öÆ°
+	JTextArea ta_Chat; // Ã¤ÆÃ ³»¿ëÃ¢
+	JLabel lbl_ChatMb; // ¶óº§(Âü°¡ÀÚ¸í, )
+	Socket sock;
+	BufferedReader in;
+	PrintWriter out;
 	
 	public ChatClient() {
 		
-		//í”„ë ˆì„ ì°½ ì„¤ì •
-		setTitle("ì±„íŒ…ìƒë‹´"); //ì°½ íƒ€ì´í‹€
-		setSize(386, 577); // ì°½ ì‚¬ì´ì¦ˆ
-        setLocationRelativeTo(null); // ì°½ ê°€ìš´ë° ë„ì›€
-		getContentPane().setBackground(new Color(169, 219, 208)); //ë°°ê²½ ìƒ‰
-		getContentPane().setLayout(null); //ë ˆì´ì•„ì›ƒ ê´€ë¦¬ì ë¹„í™œì„±í™” í›„ ì§ì ‘ ë°°ì¹˜
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//í”„ë¡œê·¸ë¨ ì¢…ë£Œí•˜ëŠ” ë°©ë²•
+		//ÇÁ·¹ÀÓ Ã¢ ¼³Á¤
+		setTitle("Ã¤ÆÃ»ó´ã"); //Ã¢ Å¸ÀÌÆ²
+		setSize(386, 577); // Ã¢ »çÀÌÁî
+        setLocationRelativeTo(null); // Ã¢ °¡¿îµ¥ ¶ç¿ò
+		getContentPane().setBackground(new Color(169, 219, 208)); //¹è°æ »ö
+		getContentPane().setLayout(null); //·¹ÀÌ¾Æ¿ô °ü¸®ÀÚ ºñÈ°¼ºÈ­ ÈÄ Á÷Á¢ ¹èÄ¡
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//ÇÁ·Î±×·¥ Á¾·áÇÏ´Â ¹æ¹ı
 		
 		
-		//ìƒë‹´ ì‹ ì²­ì ì´ë¦„ ë³´ì—¬ì£¼ëŠ” ê³³
+		//»ó´ã ½ÅÃ»ÀÚ ÀÌ¸§ º¸¿©ÁÖ´Â °÷
 		JPanel p1 = new JPanel();
-		p1.setBounds(0, 0, 370, 75); //íŒ¨ë„ ì‚¬ì´ì¦ˆ, ìœ„ì¹˜
-		p1.setBackground(new Color(169, 219, 208)); //íŒ¨ë„ ë°°ê²½ìƒ‰
-		p1.setLayout(null); //ë ˆì´ì•„ì›ƒ ê´€ë¦¬ì ë¹„í™œì„±í™” í›„ ì§ì ‘ ë°°ì¹˜
+		p1.setBounds(0, 0, 370, 75); //ÆĞ³Î »çÀÌÁî, À§Ä¡
+		p1.setBackground(new Color(169, 219, 208)); //ÆĞ³Î ¹è°æ»ö
+		p1.setLayout(null); //·¹ÀÌ¾Æ¿ô °ü¸®ÀÚ ºñÈ°¼ºÈ­ ÈÄ Á÷Á¢ ¹èÄ¡
 		getContentPane().add(p1);
 		
-		lbl_ChatMb = new JLabel("ëŒ€í™”ì°½"); //ë¼ë²¨
-		lbl_ChatMb.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 14)); //í°íŠ¸ ì„¤ì •
-		lbl_ChatMb.setBounds(12, 10, 115, 15); //ì‚¬ì´ì¦ˆ, ìœ„ì¹˜
+		lbl_ChatMb = new JLabel("´ëÈ­Ã¢"); //¶óº§
+		lbl_ChatMb.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 14)); //ÆùÆ® ¼³Á¤
+		lbl_ChatMb.setBounds(12, 10, 115, 15); //»çÀÌÁî, À§Ä¡
 		p1.add(lbl_ChatMb);
 		
-		tf_ChatMb = new JTextField(); //ì±„íŒ… ì‹ ì²­ì ì´ë¦„ ë³´ì—¬ì¤Œ
-		tf_ChatMb.setBorder(new EmptyBorder(0, 0, 0, 0)); //í…Œë‘ë¦¬ ì—†ì•°
-		tf_ChatMb.setBounds(0, 35, 370, 30); //ì‚¬ì´ì¦ˆ, ìœ„ì¹˜
+		tf_ChatMb = new JTextField(); //Ã¤ÆÃ ½ÅÃ»ÀÚ ÀÌ¸§ º¸¿©ÁÜ
+		tf_ChatMb.setBorder(new EmptyBorder(0, 0, 0, 0)); //Å×µÎ¸® ¾ø¾Ú
+		tf_ChatMb.setBounds(0, 35, 370, 30); //»çÀÌÁî, À§Ä¡
 		p1.add(tf_ChatMb);
 
 		
-		// ì±„íŒ… ë‚´ìš© ë³´ì—¬ì£¼ëŠ” ê³³
+		// Ã¤ÆÃ ³»¿ë º¸¿©ÁÖ´Â °÷
 		JPanel p2 = new JPanel();
-		p2.setBounds(0, 74, 370, 410); //ì‚¬ì´ì¦ˆ, ìœ„ì¹˜
-		p2.setBackground(new Color(238, 238, 238)); // íŒ¨ë„ ë°°ê²½ìƒ‰ ì„¤ì •
-		p2.setLayout(null); //ë ˆì´ì•„ì›ƒ ê´€ë¦¬ì ë¹„í™œì„±í™” í›„ ì§ì ‘ ë°°ì¹˜
+		p2.setBounds(0, 74, 370, 410); //»çÀÌÁî, À§Ä¡
+		p2.setBackground(new Color(238, 238, 238)); // ÆĞ³Î ¹è°æ»ö ¼³Á¤
+		p2.setLayout(null); //·¹ÀÌ¾Æ¿ô °ü¸®ÀÚ ºñÈ°¼ºÈ­ ÈÄ Á÷Á¢ ¹èÄ¡
 		getContentPane().add(p2);
 		
 		
-		ta_Chat = new JTextArea(); //ì±„íŒ… ë³´ì—¬ì¤Œ
-		ta_Chat.setBounds(0, 0, 370, 352); //ì‚¬ì´ì¦ˆ, ìœ„ì¹˜
+		ta_Chat = new JTextArea(); //Ã¤ÆÃ º¸¿©ÁÜ
+		ta_Chat.setBounds(0, 0, 370, 352); //»çÀÌÁî, À§Ä¡
 		p2.add(ta_Chat);
 		
-		tf_Write = new JTextField(); //ì±„íŒ… ì…ë ¥ ì°½
-		tf_Write.setBounds(0, 362, 295, 38); //ì‚¬ì´ì¦ˆ, ìœ„ì¹˜
+		tf_Write = new JTextField(); //Ã¤ÆÃ ÀÔ·Â Ã¢
+		tf_Write.setBounds(0, 362, 295, 38); //»çÀÌÁî, À§Ä¡
 		p2.add(tf_Write);
 		
-		btn_send = new JButton("ì „ ì†¡");
-		btn_send.setBounds(299, 362, 71, 38); //ì‚¬ì´ì¦ˆ, ìœ„ì¹˜
-		btn_send.setForeground(new Color(0, 0, 0)); //í°íŠ¸ ìƒ‰
-		btn_send.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 14)); //í°íŠ¸ ì„¤ì •
-		btn_send.setBackground(new Color(255, 255, 255)); //ë²„íŠ¼ ë°°ê²½ìƒ‰
+		btn_send = new JButton("Àü ¼Û");
+		btn_send.setBounds(299, 362, 71, 38); //»çÀÌÁî, À§Ä¡
+		btn_send.setForeground(new Color(0, 0, 0)); //ÆùÆ® »ö
+		btn_send.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 14)); //ÆùÆ® ¼³Á¤
+		btn_send.setBackground(new Color(255, 255, 255)); //¹öÆ° ¹è°æ»ö
 		p2.add(btn_send);
 		
 		
-		//ìƒë‹´ ì¢…ë£Œ ë²„íŠ¼
-		btn_close = new JButton("ìƒë‹´ ì¢…ë£Œ");
-		btn_close.setForeground(Color.WHITE); //í°íŠ¸ ìƒ‰
-		btn_close.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 14)); //í°íŠ¸ ì„¤ì •
-		btn_close.setBackground(new Color(62, 192, 196)); //ë²„íŠ¼ ë°°ê²½ìƒ‰
-		btn_close.setBounds(134, 494, 101, 34); //ì‚¬ì´ì¦ˆ, ìœ„ì¹˜
+		//»ó´ã Á¾·á ¹öÆ°
+		btn_close = new JButton("»ó´ã Á¾·á");
+		btn_close.setForeground(Color.WHITE); //ÆùÆ® »ö
+		btn_close.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 14)); //ÆùÆ® ¼³Á¤
+		btn_close.setBackground(new Color(62, 192, 196)); //¹öÆ° ¹è°æ»ö
+		btn_close.setBounds(134, 494, 101, 34); //»çÀÌÁî, À§Ä¡
 		getContentPane().add(btn_close);
 		
-		//ë²„íŠ¼ ì´ë²¤íŠ¸ ë©”ì†Œë“œ í˜¸ì¶œ
+		//¹öÆ° ÀÌº¥Æ® ¸Ş¼Òµå È£Ãâ
 		btn_send.addActionListener(this);
 		btn_close.addActionListener(this);
 		
 		setVisible(true);
+	}
+	
+	
+	public void run() {
+		try {
+			String host = "127.0.0.1";
+			int port = 8002;
+			connect(host,port);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void connect(String host, int port) {
+		try {
+			sock = new Socket(host, port);
+			in = new BufferedReader(
+					new InputStreamReader(sock.getInputStream()));
+			out = new PrintWriter(sock.getOutputStream(),true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -90,8 +119,11 @@ implements ActionListener {
 			System.exit(0);
 		}else if (e.getSource()==btn_send) {
 			
+			
+			}
+			
 		}
-	}
+	
 	
 	public static void main(String[] args) {
 		new ChatClient();
