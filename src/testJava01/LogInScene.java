@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -14,7 +15,11 @@ import javax.swing.JTextField;
 
 public class LogInScene extends JPanel{
 	SceneManager sceneManager = SceneManager.getInstance();
+	TestSocket testSocket = TestSocket.getInstance();
+	
+	//각종 씬
 	HomeScene homeScene = HomeScene.getInstance();
+	
 	private static final LogInScene instance = new LogInScene();
 	//------------
 	private JTextField usernameField;
@@ -51,9 +56,10 @@ public class LogInScene extends JPanel{
                 System.out.println("Username: " + username);
                 System.out.println("Password: " + password);
 
-                // 로그인 성공 시 다음 동작 수행
+                // 로그인 성공 시 다음 동작 수행 아이디 : 123, 비밀번호 : 789 입니다.
+                logInRequest(username, password);
                 JOptionPane.showMessageDialog(LogInScene.this, "로그인 성공!");
-              
+                
                 //homeScene으로 이동
                 sceneManager.switchToScene(homeScene);
             }
@@ -65,9 +71,17 @@ public class LogInScene extends JPanel{
         // 로그인 폼 패널을 중앙에 배치
         add(loginFormPanel, BorderLayout.CENTER);
         
-        
-        
 	}
+	
+	private boolean logInRequest(String username,String password) {
+		//이곳은 로그인 처리 로직이다.
+		boolean request = false;
+		
+		request = testSocket.sendCredentialsAndReceiveName(username, password);
+				
+		return request;
+	}
+	
 	
 	public static LogInScene getInstance() {
 	     return instance;
