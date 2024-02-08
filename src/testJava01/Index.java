@@ -7,7 +7,8 @@ public class Index {
 	public static void main(String[] args) {
         // 싱글톤 매니저 인스턴스를 가져옴
         SceneManager sceneManager = SceneManager.getInstance();
-        TestSocket testSocket = TestSocket.getInstance();
+        TestSocket testSocket = TestSocket.getInstance();//소켓 생성 해주기
+        MemberManager memberManager = MemberManager.getInstance();//회원정보 MemberManager
         
         // 각각의 씬 인스턴스를 가져옴
         Scene1 scene1 = Scene1.getInstance();
@@ -32,19 +33,18 @@ public class Index {
         
         //-------------------------------------------
         // 싱글톤 인스턴스 얻기
-        MemberManager manager1 = MemberManager.getInstance();
-        MemberManager manager2 = MemberManager.getInstance();
+//        MemberManager manager1 = MemberManager.getInstance();
+//        MemberManager manager2 = MemberManager.getInstance();
+//
+//        // 회원 추가
+//        manager1.addMember(1, "John Doe");
+//        manager2.addMember(2, "Jane Doe");
+//
+//        // 회원 정보 출력
+//        manager1.printMembers();
+//        manager2.printMembers();
 
-        // 회원 추가
-        manager1.addMember(1, "John Doe");
-        manager2.addMember(2, "Jane Doe");
-
-        // 회원 정보 출력
-        manager1.printMembers();
-        manager2.printMembers();
-
-        // 두 인스턴스가 동일한 객체를 참조하는지 확인
-        System.out.println(manager1 == manager2);
+        
         
     }
 }
