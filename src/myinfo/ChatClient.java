@@ -12,8 +12,10 @@ import java.net.Socket;
 import javax.swing.border.EmptyBorder;
 
 
+
+
 public class ChatClient extends JFrame
-implements ActionListener {
+implements ActionListener, Runnable {
 	JTextField tf_ChatMb, tf_Write; //참가자, 채팅작성
 	JButton btn_send, btn_close;  // 전송, 상담종료 버튼
 	JTextArea ta_Chat; // 채팅 내용창
@@ -21,6 +23,7 @@ implements ActionListener {
 	Socket sock;
 	BufferedReader in;
 	PrintWriter out;
+	
 	
 	public ChatClient() {
 		
@@ -102,6 +105,25 @@ implements ActionListener {
 		}
 	}
 	
+	
+
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource()==btn_close) {
+			new Thread(this).start();//run메소드 호출
+			
+		}else if(e.getSource()==btn_send) {	
+			String str = tf_Write.getText();
+			ta_Chat.append(ChatProtocol.ID + " : "+ str + "\n");
+			sendMessage(ChatProtocol.CHATALL + ChatProtocol.MODE + str);
+
+		}
+		tf_Write.setText("");
+		tf_Write.requestFocus();
+	}
+	
+
 	public void connect(String host, int port) {
 		try {
 			sock = new Socket(host, port);
@@ -112,18 +134,10 @@ implements ActionListener {
 			e.printStackTrace();
 		}
 	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource()==btn_close) {
-			System.exit(0);
-		}else if (e.getSource()==btn_send) {
-			
-			
-			}
-			
-		}
-	
+		
+	public void sendMessage(String msg) {
+		out.println(msg);
+	}
 	
 	public static void main(String[] args) {
 		new ChatClient();
