@@ -1,5 +1,5 @@
 package testJava01;
-
+//오늘 해야할것 -> 공유할수 있을 정도로 코드를 가다듬고 정리해서 업로드 하자
 public class Index {
 	
 	
@@ -7,7 +7,7 @@ public class Index {
 	public static void main(String[] args) {
         // 싱글톤 매니저 인스턴스를 가져옴
         SceneManager sceneManager = SceneManager.getInstance();
-        TestSocket testSocket = TestSocket.getInstance();
+        
         
         // 각각의 씬 인스턴스를 가져옴
         Scene1 scene1 = Scene1.getInstance();
@@ -30,21 +30,6 @@ public class Index {
         // 예를 들어, 버튼 클릭 등의 이벤트에서 아래와 같이 사용할 수 있습니다.
         // sceneManager.switchToScene(scene2);
         
-        //-------------------------------------------
-        // 싱글톤 인스턴스 얻기
-        MemberManager manager1 = MemberManager.getInstance();
-        MemberManager manager2 = MemberManager.getInstance();
-
-        // 회원 추가
-        manager1.addMember(1, "John Doe");
-        manager2.addMember(2, "Jane Doe");
-
-        // 회원 정보 출력
-        manager1.printMembers();
-        manager2.printMembers();
-
-        // 두 인스턴스가 동일한 객체를 참조하는지 확인
-        System.out.println(manager1 == manager2);
         
     }
 }
