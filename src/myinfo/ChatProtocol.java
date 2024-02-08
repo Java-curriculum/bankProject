@@ -18,6 +18,9 @@ public class ChatProtocol {
 	public  static final String CHATALL = "CHATALL";
 	
 	public static final String MODE = ":";
+	
+	//(S->C) CHATLIST:aaa;bbb;ccc;ddd;
+	public  static final String CHATLIST = "CHATLIST";
 }
 
 

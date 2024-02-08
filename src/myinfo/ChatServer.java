@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.Vector;
 
 
+
 public class ChatServer {
 	public static final int PORT = 8002;
 	ServerSocket server;
@@ -22,7 +23,7 @@ public class ChatServer {
 			System.err.println("Error in Server");
 			System.exit(1);//비정상적인 종료
 		}
-		System.out.println("**Chat Server**");
+		System.out.println("**ChatServer**");
 		System.out.println("**클라이언트 접속을 기다리고 있습니다**");
 		try {
 			while(true) {
@@ -106,10 +107,13 @@ public class ChatServer {
 				String data = line.substring(idx+1);
 				if (cmd.equals(ChatProtocol.ID)) {
 					id=data;
+					
+					//새로운 접속자가 추가 되었기 때문에 리스트 재전송
+					sendAllMessage(ChatProtocol.CHATLIST+ChatProtocol.MODE+getIdList());
 					//새로운 접속자 welcome 메세지 전송
-					sendAllMessage(ChatProtocol.CHATALL+ChatProtocol.MODE + id + "님이 입장했습니다.");
+					sendAllMessage(ChatProtocol.CHATALL+ChatProtocol.MODE+"[" + id + "]님이 입장하였습니다.");
 				}else if (cmd.equals(ChatProtocol.CHATALL)) {
-					sendAllMessage(ChatProtocol.CHATALL+ChatProtocol.MODE+ id + " : " + data);
+					sendAllMessage(ChatProtocol.CHATALL+ChatProtocol.MODE+"[" + id + "]" + data);
 				}
 			}//--routine--
 	
