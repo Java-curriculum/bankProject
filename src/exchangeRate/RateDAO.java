@@ -1,5 +1,4 @@
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
@@ -12,20 +11,20 @@ public class RateDAO {
 	private static final String PASSWORD = "1234";
 	private static final String URL = "jdbc:mysql://localhost:3306/test";
 	
-	//í´ë˜ìŠ¤ì™€ DB ì—°ë™
+	//Å¬·¡½º¿Í DB ¿¬µ¿
 	public RateDAO() {
 		try {
 //			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(URL,USERNAME,PASSWORD);
-			System.out.println("DBì—°ë™ ì„±ê³µ");
+			System.out.println("DB¿¬µ¿ ¼º°ø");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("DBì—°ë™ ì‹¤íŒ¨");
+			System.out.println("DB¿¬µ¿ ½ÇÆĞ");
 		}
 	}
 	
 	
-	//ë‚ ì§œì™€ ê¸°ì¤€ í™˜ìœ¨ì„ ë ˆì½”ë“œì— ì‚½ì…í•˜ëŠ” ë©”ì†Œë“œ
+	//³¯Â¥¿Í ±âÁØ È¯À²À» ·¹ÄÚµå¿¡ »ğÀÔÇÏ´Â ¸Ş¼Òµå
 	public static void insertRate(RateInfo ExchangeRate) {
 		String sql = "insert into exchange_rate values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = null;
@@ -62,7 +61,7 @@ public class RateDAO {
 	}
 	
 	
-	//ê°€ì¥ ìµœê·¼ì— ì‚½ì…ëœ ë ˆì½”ë“œë¥¼ ê°€ì ¸ì˜¤ëŠ” ë©”ì†Œë“œ
+	//°¡Àå ÃÖ±Ù¿¡ »ğÀÔµÈ ·¹ÄÚµå¸¦ °¡Á®¿À´Â ¸Ş¼Òµå
 	public RateInfo getNewestRate() {
         RateInfo exchange = null;
 //    	String day = LocalDate.now().minusDays(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -95,7 +94,7 @@ public class RateDAO {
     	return exchange;
     }
 	
-    // ë ˆì½”ë“œ ìˆ˜ë¥¼ ë°˜í™˜í•˜ëŠ” ë©”ì†Œë“œ
+    // ·¹ÄÚµå ¼ö¸¦ ¹İÈ¯ÇÏ´Â ¸Ş¼Òµå
 	public int getRecordCount() {
 		int count = 0;
         String sql = "SELECT COUNT(*) FROM exchange_rate";
@@ -112,7 +111,7 @@ public class RateDAO {
     }
 
 	
-    // ê°€ì¥ ì˜¤ë˜ëœ ë ˆì½”ë“œë¥¼ ì‚­ì œí•˜ëŠ” ë©”ì†Œë“œ
+    // °¡Àå ¿À·¡µÈ ·¹ÄÚµå¸¦ »èÁ¦ÇÏ´Â ¸Ş¼Òµå
     public void deleteOldestRecord() {
         String sql = "DELETE FROM exchange_rate ORDER BY DAY ASC LIMIT 1";
         try {
@@ -123,7 +122,7 @@ public class RateDAO {
         }
     }
     
-    // ê°€ì¥ ìµœê·¼ ë ˆì½”ë“œë¥¼ ì‚­ì œí•˜ëŠ” ë©”ì†Œë“œ
+    // °¡Àå ÃÖ±Ù ·¹ÄÚµå¸¦ »èÁ¦ÇÏ´Â ¸Ş¼Òµå
     public void deleteNewestRecord() {
     	String sql = "DELETE FROM exchange_rate ORDER BY DAY DESC LIMIT 1";
     	try {
@@ -134,7 +133,7 @@ public class RateDAO {
     	}
     }
     
-    //í™˜ìœ¨ í‘œë¥¼ ì¶œë ¥í•˜ê¸° ìœ„í•œ í™˜ìœ¨ ì •ë³´ ë°›ì•„ì˜¤ê¸°
+    //È¯À² Ç¥¸¦ Ãâ·ÂÇÏ±â À§ÇÑ È¯À² Á¤º¸ ¹Ş¾Æ¿À±â
     public RateInfo getTodayRate() {
         RateInfo rateInfo = null;
         PreparedStatement pstmt = null;
@@ -173,8 +172,8 @@ public class RateDAO {
     public List<RateInfo> getWeekRates(Date date) {
         List<RateInfo> weekRates = new ArrayList<>();
         
-        // ë°ì´í„°ë² ì´ìŠ¤ì—ì„œ 1ì£¼ì¼ì¹˜ ë°ì´í„°ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤.
-        // ì´ ë¶€ë¶„ì€ ì‹¤ì œ ë°ì´í„°ë² ì´ìŠ¤ì™€ SQL ì¿¼ë¦¬ì— ë”°ë¼ êµ¬í˜„í•´ì•¼ í•©ë‹ˆë‹¤.
+        // µ¥ÀÌÅÍº£ÀÌ½º¿¡¼­ 1ÁÖÀÏÄ¡ µ¥ÀÌÅÍ¸¦ °¡Á®¿É´Ï´Ù.
+        // ÀÌ ºÎºĞÀº ½ÇÁ¦ µ¥ÀÌÅÍº£ÀÌ½º¿Í SQL Äõ¸®¿¡ µû¶ó ±¸ÇöÇØ¾ß ÇÕ´Ï´Ù.
         try {
 	        String sql = "SELECT * FROM exchange_rate WHERE DAY >= DATE_SUB(?, INTERVAL 1 WEEK)";
 	        PreparedStatement pstmt = conn.prepareStatement(sql);

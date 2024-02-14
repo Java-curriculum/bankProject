@@ -1,5 +1,4 @@
 
-
 import java.sql.Date;
 
 public class RateInfo {
@@ -122,7 +121,7 @@ public class RateInfo {
 	    }
 	}
 	
-	//ì¼ì¼ í™˜ìœ¨ ë¹„êµë¥¼ ìœ„í•œ ë©”ì†Œë“œ
+	//ÀÏÀÏ È¯À² ºñ±³¸¦ À§ÇÑ ¸Ş¼Òµå
 	@Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
