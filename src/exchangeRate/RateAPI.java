@@ -22,7 +22,7 @@ public class RateAPI {
     	HttpURLConnection conn = null;
     	StringBuilder sb = new StringBuilder();
     	
-    	//API ë¶ˆëŸ¬ì˜¤ê¸°
+    	//API ºÒ·¯¿À±â
     	try {
             String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
     		URL url = new URL("https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=syKXlVngjVbdfOa5WuYszqGrcD3vcgeR&searchdate="+today+"+&data=AP01");
@@ -46,17 +46,17 @@ public class RateAPI {
 			e.printStackTrace();
 		}
     	
-    	//ì œì™¸í•´ì•¼ í•˜ëŠ” í™”íì½”ë“œ
+    	//Á¦¿ÜÇØ¾ß ÇÏ´Â È­ÆóÄÚµå
         List<String> excludedCurrencies = Arrays.asList("AED", "BHD", "BND", "DKK", "IDR(100)", "KWD", "MYR", "NOK", "SAR", "SEK");
     	
     	RateDAO dao = new RateDAO();
     	RateInfo exchange = new RateInfo();
     	RateInfo exchange1 = new RateInfo();
     	
-    	//RateInfo íƒ€ì…ì˜ ë³€ìˆ˜ exchangeì˜ DAY ê°’ì— ì˜¤ëŠ˜ì˜ ë‚ ì§œ (yyyy-MM-dd) ì…ë ¥ 
+    	//RateInfo Å¸ÀÔÀÇ º¯¼ö exchangeÀÇ DAY °ª¿¡ ¿À´ÃÀÇ ³¯Â¥ (yyyy-MM-dd) ÀÔ·Â 
     	exchange.setDAY(Date.valueOf(LocalDate.now()));
     	
-    	//RateInfo íƒ€ì…ì˜ ë³€ìˆ˜ exchangeì˜ í™”í ì½”ë“œ ê°’ì— APIì—ì„œ ë°›ì•„ì˜¨ ì˜¤ëŠ˜ì˜ ê¸°ì¤€ í™˜ìœ¨ ì…ë ¥
+    	//RateInfo Å¸ÀÔÀÇ º¯¼ö exchangeÀÇ È­Æó ÄÚµå °ª¿¡ API¿¡¼­ ¹Ş¾Æ¿Â ¿À´ÃÀÇ ±âÁØ È¯À² ÀÔ·Â
     	if(result != null) {
             for (Object aResult : result) {
                 JSONObject jsonObject = (JSONObject) aResult;
@@ -118,37 +118,37 @@ public class RateAPI {
                 }
             }
             
-            //APIì—ì„œ ë°›ì•„ì˜¨ ê¸°ì¤€ í™˜ìœ¨ì˜ ê°’ì´ NULL ì´ë©´ default ê°’ì— ë”°ë¼ì„œ 0ìœ¼ë¡œ ë³€í™˜
-            //ì˜¤ëŠ˜ì˜ ê¸°ì¤€í™˜ìœ¨ì´ 0ì¸ì§€ ê²€ì‚¬
+            //API¿¡¼­ ¹Ş¾Æ¿Â ±âÁØ È¯À²ÀÇ °ªÀÌ NULL ÀÌ¸é default °ª¿¡ µû¶ó¼­ 0À¸·Î º¯È¯
+            //¿À´ÃÀÇ ±âÁØÈ¯À²ÀÌ 0ÀÎÁö °Ë»ç
             boolean isAllZero = exchange.getUSD() == 0 && exchange.getJPY() == 0 && exchange.getTHB() == 0 && exchange.getAUD() == 0 && exchange.getCAD() == 0 && exchange.getCHF() == 0 && exchange.getCNY() == 0 && exchange.getEUR() == 0 && exchange.getGBP() == 0 && exchange.getHKD() == 0 && exchange.getNZD() == 0 && exchange.getSGD() == 0 && exchange.getKRW() == 0;
             
-            //RateInfo íƒ€ì…ì˜ ë³€ìˆ˜ exchange1ì˜ DAY ì»¬ëŸ¼ì—ëŠ” ì˜¤ëŠ˜ì˜ ë‚ ì§œ, ê¸°ì¤€ í™˜ìœ¨ ì»¬ëŸ¼ì—ëŠ” ê°€ì¥ ìµœê·¼ ë ˆì½”ë“œì˜ ê¸°ì¤€ í™˜ìœ¨ ì…ë ¥
+            //RateInfo Å¸ÀÔÀÇ º¯¼ö exchange1ÀÇ DAY ÄÃ·³¿¡´Â ¿À´ÃÀÇ ³¯Â¥, ±âÁØ È¯À² ÄÃ·³¿¡´Â °¡Àå ÃÖ±Ù ·¹ÄÚµåÀÇ ±âÁØ È¯À² ÀÔ·Â
         	exchange1 = dao.getNewestRate();
             
-        	//APIë¥¼ í†µí•´ NULL ê°’ì´ ë“¤ì–´ì˜¬ ê²½ìš° 
+        	//API¸¦ ÅëÇØ NULL °ªÀÌ µé¾î¿Ã °æ¿ì 
             if(isAllZero) {
-            	System.out.println("ì¡°ê±´1: ìµœê·¼ ê¸°ì¤€ í™˜ìœ¨ì„ ë°›ì•„ì˜µë‹ˆë‹¤.");
+            	System.out.println("Á¶°Ç1: ÃÖ±Ù ±âÁØ È¯À²À» ¹Ş¾Æ¿É´Ï´Ù.");
             	dao.insertRate(exchange1);
             	while(dao.getRecordCount() > 7) {
                     dao.deleteOldestRecord();
                 }
             }
             
-            //ìµœê·¼ ì…ë ¥ëœ ë ˆì½”ë“œì˜ ê¸°ì¤€ í™˜ìœ¨ê³¼ APIì—ì„œ ë°›ì•„ì˜¨ ê¸°ì¤€ í™˜ìœ¨ì´ ê°™ì„ ê²½ìš° 
+            //ÃÖ±Ù ÀÔ·ÂµÈ ·¹ÄÚµåÀÇ ±âÁØ È¯À²°ú API¿¡¼­ ¹Ş¾Æ¿Â ±âÁØ È¯À²ÀÌ °°À» °æ¿ì 
             else if(exchange.equals(exchange1)) {
-            	System.out.println("ì¡°ê±´2: ë ˆì½”ë“œë¥¼ ì‚½ì…í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            	System.out.println("Á¶°Ç2: ·¹ÄÚµå¸¦ »ğÀÔÇÏÁö ¾Ê½À´Ï´Ù.");
             }
-            //ìµœê·¼ ì…ë ¥ëœ ë ˆì½”ë“œì˜ ê¸°ì¤€ í™˜ìœ¨ê³¼ APIì—ì„œ ë°›ì•„ì˜¨ ê¸°ì¤€ í™˜ìœ¨ì´ ë‹¤ë¥¼ ê²½ìš°
+            //ÃÖ±Ù ÀÔ·ÂµÈ ·¹ÄÚµåÀÇ ±âÁØ È¯À²°ú API¿¡¼­ ¹Ş¾Æ¿Â ±âÁØ È¯À²ÀÌ ´Ù¸¦ °æ¿ì
             else if(!exchange.equals(exchange1)) {
-            	System.out.println("ì¡°ê±´3: ì˜¤ëŠ˜ì˜ ê¸°ì¤€ í™˜ìœ¨ì„ ë‹¤ì‹œ ë°›ì•„ì˜µë‹ˆë‹¤.");
+            	System.out.println("Á¶°Ç3: ¿À´ÃÀÇ ±âÁØ È¯À²À» ´Ù½Ã ¹Ş¾Æ¿É´Ï´Ù.");
             	dao.deleteNewestRecord();
             	dao.insertRate(exchange);
             }
             else {
-            	System.out.println("ë ˆì½”ë“œë¥¼ ì‚½ì…í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            	System.out.println("·¹ÄÚµå¸¦ »ğÀÔÇÏÁö ¾Ê½À´Ï´Ù.");
             }
         } else {
-            System.out.println("API í˜¸ì¶œ ê²°ê³¼ê°€ ì—†ìŠµë‹ˆë‹¤.");
+            System.out.println("API È£Ãâ °á°ú°¡ ¾ø½À´Ï´Ù.");
         }
     	conn.disconnect();
     }

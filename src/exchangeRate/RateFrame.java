@@ -1,5 +1,4 @@
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -51,12 +50,12 @@ public class RateFrame extends JFrame implements ActionListener{
         RateDAO dao = new RateDAO();
         RateInfo todayRate = dao.getTodayRate();
 		
-		// ë©”ë‰´ íŒ¨ë„ ì„¤ì •
+		// ¸Ş´º ÆĞ³Î ¼³Á¤
         menu_pan = new JPanel();
         menu_pan.setLayout(new GridLayout(7, 1));
         
         logo = new JButton("logo");
-        logout = new JButton("ë¡œê·¸ì•„ì›ƒ");
+        logout = new JButton("·Î±×¾Æ¿ô");
         
         menu_pan.add(logo);
         
@@ -66,7 +65,7 @@ public class RateFrame extends JFrame implements ActionListener{
         }
         menu_pan.add(logout);
         
-        // ì •ë³´ íŒ¨ë„ ì„¤ì •
+        // Á¤º¸ ÆĞ³Î ¼³Á¤
         rate_pan = new JPanel();
         rate_pan.setLayout(new GridLayout(2, 1));
 
@@ -76,7 +75,7 @@ public class RateFrame extends JFrame implements ActionListener{
         major_rate_pan.setLayout(new BorderLayout());
         all_rate_pan.setLayout(new BorderLayout());
         
-        major_rate_header = new JTextArea("ì£¼ìš” êµ­ê°€ í™˜ìœ¨ í˜„í™©");
+        major_rate_header = new JTextArea("ÁÖ¿ä ±¹°¡ È¯À² ÇöÈ²");
         major_rate_header.setEditable(false);
         
         p1 = new JPanel();
@@ -102,27 +101,27 @@ public class RateFrame extends JFrame implements ActionListener{
         major_rate_pan.add(p1,BorderLayout.CENTER);
 		major_rate_pan.add(major_rate_header, BorderLayout.NORTH);
         
-        all_rate_header = new JTextArea("ë‚˜ë¼ ë³„ í™˜ìœ¨ ì •ë³´");
+        all_rate_header = new JTextArea("³ª¶ó º° È¯À² Á¤º¸");
         all_rate_header.setEditable(false);
       
         if(todayRate != null) {
         	
         	//
-        	String header[] = {"í†µí™”ì½”ë“œ", "ë‚˜ë¼ëª…", "í†µí™”ëª…", "ê¸°ì¤€í†µí™”ìœ¨"};
+        	String header[] = {"ÅëÈ­ÄÚµå", "³ª¶ó¸í", "ÅëÈ­¸í", "±âÁØÅëÈ­À²"};
             String contents[][] = {        
-            		{"USD", "ë¯¸êµ­", "ë¯¸êµ­ ë‹¬ëŸ¬", String.valueOf(todayRate.getUSD())},
-            		{"JPY","ì¼ë³¸","ì¼ë³¸ ì—”",String.valueOf(todayRate.getJPY())},
-            		{"THB","íƒœêµ­","íƒœêµ­ ë°”íŠ¸",String.valueOf(todayRate.getTHB())},
-            		{"AUD","í˜¸ì£¼","í˜¸ì£¼ ë‹¬ëŸ¬",String.valueOf(todayRate.getAUD())},
-            		{"CAD","ìºë‚˜ë‹¤","ìºë‚˜ë‹¤ ë‹¬ëŸ¬",String.valueOf(todayRate.getCAD())},
-            		{"CHF","ìŠ¤ìœ„ìŠ¤","ìŠ¤ìœ„ìŠ¤ í”„ë‘",String.valueOf(todayRate.getCHF())},
-            		{"CNY","ì¤‘êµ­","ì¤‘êµ­ ìœ„ì•ˆ",String.valueOf(todayRate.getCNY())},
-            		{"EUR","ìœ ëŸ½","ìœ ëŸ½ ìœ ë¡œ",String.valueOf(todayRate.getEUR())},
-            		{"GBP","ì˜êµ­","ì˜êµ­ íŒŒìš´ë“œ",String.valueOf(todayRate.getGBP())},
-            		{"HKD","í™ì½©","í™ì½© ë‹¬ëŸ¬",String.valueOf(todayRate.getHKD())},
-            		{"NZD","ë‰´ì§ˆëœë“œ","ë‰´ì§ˆëœë“œ ë‹¬ëŸ¬",String.valueOf(todayRate.getNZD())},
-            		{"SGD","ì‹±ê°€í¬ë¥´","ì‹±ê°€í¬ë¥´ ë‹¬ëŸ¬",String.valueOf(todayRate.getSGD())},
-            		{"KRW","í•œêµ­","í•œêµ­ ì›",String.valueOf(todayRate.getKRW())},
+            		{"USD", "¹Ì±¹", "¹Ì±¹ ´Ş·¯", String.valueOf(todayRate.getUSD())},
+            		{"JPY","ÀÏº»","ÀÏº» ¿£",String.valueOf(todayRate.getJPY())},
+            		{"THB","ÅÂ±¹","ÅÂ±¹ ¹ÙÆ®",String.valueOf(todayRate.getTHB())},
+            		{"AUD","È£ÁÖ","È£ÁÖ ´Ş·¯",String.valueOf(todayRate.getAUD())},
+            		{"CAD","Ä³³ª´Ù","Ä³³ª´Ù ´Ş·¯",String.valueOf(todayRate.getCAD())},
+            		{"CHF","½ºÀ§½º","½ºÀ§½º ÇÁ¶û",String.valueOf(todayRate.getCHF())},
+            		{"CNY","Áß±¹","Áß±¹ À§¾È",String.valueOf(todayRate.getCNY())},
+            		{"EUR","À¯·´","À¯·´ À¯·Î",String.valueOf(todayRate.getEUR())},
+            		{"GBP","¿µ±¹","¿µ±¹ ÆÄ¿îµå",String.valueOf(todayRate.getGBP())},
+            		{"HKD","È«Äá","È«Äá ´Ş·¯",String.valueOf(todayRate.getHKD())},
+            		{"NZD","´ºÁú·£µå","´ºÁú·£µå ´Ş·¯",String.valueOf(todayRate.getNZD())},
+            		{"SGD","½Ì°¡Æ÷¸£","½Ì°¡Æ÷¸£ ´Ş·¯",String.valueOf(todayRate.getSGD())},
+            		{"KRW","ÇÑ±¹","ÇÑ±¹ ¿ø",String.valueOf(todayRate.getKRW())},
             };
             
             
@@ -162,19 +161,19 @@ public class RateFrame extends JFrame implements ActionListener{
 
         setVisible(true);
         
-        //í…Œì´ë¸”ì˜ ë¡œìš° í´ë¦­ì‹œ ì„¸ë¶€ì‚¬í•­ í‘œì‹œ
+        //Å×ÀÌºíÀÇ ·Î¿ì Å¬¸¯½Ã ¼¼ºÎ»çÇ× Ç¥½Ã
         all_rate_table.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		if(e.getClickCount() == 1) {
         			JPanel detail_p1 = new JPanel(new GridLayout(1,2));
         			JPanel detail_p2 = new JPanel(new GridLayout(2,1));
-        			JButton move_btn = new JButton("í™˜ì „");
-        			JButton exit_btn = new JButton("ì·¨ì†Œ");
+        			JButton move_btn = new JButton("È¯Àü");
+        			JButton exit_btn = new JButton("Ãë¼Ò");
         			JTable target = (JTable)e.getSource();
         			int row = target.getSelectedRow();
         			Date date = new Date(System.currentTimeMillis());
-        			//í´ë¦­í•œ ì¤„ì˜ ì •ë³´ë¥¼ ë°›ì•„ì˜´
+        			//Å¬¸¯ÇÑ ÁÙÀÇ Á¤º¸¸¦ ¹Ş¾Æ¿È
         			String cur_unit = (String)target.getValueAt(row, 0);
         			String contury = (String)target.getValueAt(row, 1);
         			String cur_name = (String)target.getValueAt(row, 2);
@@ -186,17 +185,17 @@ public class RateFrame extends JFrame implements ActionListener{
         			
         			
         			for (RateInfo rateInfo : weekRates) {
-                        // ê° ë‚ ì§œì˜ í™˜ìœ¨ì„ ë°ì´í„°ì…‹ì— ì¶”ê°€í•©ë‹ˆë‹¤.    
+                        // °¢ ³¯Â¥ÀÇ È¯À²À» µ¥ÀÌÅÍ¼Â¿¡ Ãß°¡ÇÕ´Ï´Ù.    
         				dataset.addValue(rateInfo.getRate(cur_unit), cur_unit, new SimpleDateFormat("MM-dd").format(rateInfo.getDAY()));
 
                     }
 
-                    // ì„  ê·¸ë˜í”„ë¥¼ ìƒì„±í•©ë‹ˆë‹¤.
+                    // ¼± ±×·¡ÇÁ¸¦ »ı¼ºÇÕ´Ï´Ù.
                     JFreeChart lineChart = ChartFactory.createLineChart(
-                            "", // ì°¨íŠ¸ ì œëª©
-                            cur_unit, // xì¶• ë¼ë²¨
-                            "rate", // yì¶• ë¼ë²¨
-                            dataset // ë°ì´í„°ì…‹
+                            "", // Â÷Æ® Á¦¸ñ
+                            cur_unit, // xÃà ¶óº§
+                            "rate", // yÃà ¶óº§
+                            dataset // µ¥ÀÌÅÍ¼Â
                     );
                     
                     CategoryPlot plot = lineChart.getCategoryPlot();
@@ -212,7 +211,7 @@ public class RateFrame extends JFrame implements ActionListener{
                     ValueAxis yAxis = plot.getRangeAxis();
                     yAxis.setRange(min, max);
                     
-                    String[] columnNames = {"ë‚ ì§œ", "í™˜ìœ¨"};
+                    String[] columnNames = {"³¯Â¥", "È¯À²"};
                     Object[][] data = new Object[weekRates.size()][2];
                     int i = 0;
                     for (RateInfo rateInfo : weekRates) {
@@ -223,31 +222,39 @@ public class RateFrame extends JFrame implements ActionListener{
                     TableModel model = new DefaultTableModel(data, columnNames) {
                         @Override
                         public boolean isCellEditable(int row, int column) {
-                            return false;  // ëª¨ë“  ì…€ì´ ìˆ˜ì • ë¶ˆê°€ëŠ¥í•˜ê²Œ ë§Œë“­ë‹ˆë‹¤.
+                            return false;  // ¸ğµç ¼¿ÀÌ ¼öÁ¤ ºÒ°¡´ÉÇÏ°Ô ¸¸µì´Ï´Ù.
                         }
                     };
                     ChartPanel chartPanel = new ChartPanel(lineChart);
-                    chartPanel.setDomainZoomable(false);  // xì¶• ì¤Œì„ ë¹„í™œì„±í™”í•©ë‹ˆë‹¤.
-                    chartPanel.setRangeZoomable(false);   // yì¶• ì¤Œì„ ë¹„í™œì„±í™”í•©ë‹ˆë‹¤.
-                    chartPanel.setEnabled(false);      // íŒ¨ë‹ì„ ë¹„í™œì„±í™”í•©ë‹ˆë‹¤.
+                    chartPanel.setDomainZoomable(false);  // xÃà ÁÜÀ» ºñÈ°¼ºÈ­ÇÕ´Ï´Ù.
+                    chartPanel.setRangeZoomable(false);   // yÃà ÁÜÀ» ºñÈ°¼ºÈ­ÇÕ´Ï´Ù.
+                    chartPanel.setEnabled(false);      // ÆĞ´×À» ºñÈ°¼ºÈ­ÇÕ´Ï´Ù.
 
                     
                     
-                    // TableModelì„ ì‚¬ìš©í•˜ì—¬ JTableì„ ë§Œë“­ë‹ˆë‹¤.
+                    // TableModelÀ» »ç¿ëÇÏ¿© JTableÀ» ¸¸µì´Ï´Ù.
                     JTable table = new JTable(model);
                     table.setRowHeight(30);
 
-                    // ì„¸ë¶€ ì‚¬í•­ì„ ë³´ì—¬ì¤„ ìƒˆë¡œìš´ JFrameì„ ìƒì„±í•˜ê³  í‘œì‹œí•©ë‹ˆë‹¤.
+                    // ¼¼ºÎ »çÇ×À» º¸¿©ÁÙ »õ·Î¿î JFrameÀ» »ı¼ºÇÏ°í Ç¥½ÃÇÕ´Ï´Ù.
                     JFrame detailFrame = new JFrame(contury);
+                    
+                    exit_btn.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							detailFrame.dispose();
+						}
+					});
                     detailFrame.setLayout(new GridLayout(2, 1));
-                    detailFrame.add(chartPanel); // ì„  ê·¸ë˜í”„ë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+                    detailFrame.add(chartPanel); // ¼± ±×·¡ÇÁ¸¦ Ãß°¡ÇÕ´Ï´Ù.
                     detailFrame.add(detail_p1);
                     detail_p1.add(table);
                     detail_p1.add(detail_p2);
                     detail_p2.add(move_btn);
                     detail_p2.add(exit_btn);
                     detailFrame.setSize(800, 510);
-                    detailFrame.setLocationRelativeTo(RateFrame.this); // ë¶€ëª¨ ì°½ì˜ ì¤‘ì•™ì— ìœ„ì¹˜ì‹œí‚µë‹ˆë‹¤.
+                    detailFrame.setLocationRelativeTo(RateFrame.this); // ºÎ¸ğ Ã¢ÀÇ Áß¾Ó¿¡ À§Ä¡½ÃÅµ´Ï´Ù.
                     detailFrame.setVisible(true);
         		}
         	}
