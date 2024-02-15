@@ -82,7 +82,7 @@ public class MainUI extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==btn_menu[0]) {
 			//환율 버튼 이벤트
-			
+	        
 		}else if (e.getSource()==btn_menu[1]) {
 			//환전 버튼 이벤트
 			
@@ -91,13 +91,16 @@ public class MainUI extends JFrame implements ActionListener{
 		
 		}else if (e.getSource()==btn_menu[3]) {
 			//내지갑 버튼 이벤트
-			Myinfo.setVisible(false); //myinfo 비활성화
-		}else if (e.getSource()==btn_menu[4]) {
-			Myinfo = new Myinfo(); //Myinfo 패널 생성
-			p_contents.add(Myinfo); // 새로운 패널 추가
-			Myinfo.setBounds(0, 0, 826, 620); //붙여넣을 패널 위치와 사이즈 
-			Myinfo.setBackground(Color.white); //패널 배경색
 			
+		}else if (e.getSource()==btn_menu[4]) {
+			//내정보 버튼 이벤트
+			p_contents.removeAll();
+			Myinfo myinfo = new Myinfo();
+	        // MainUI의 p_contents 패널에 rate_pan 패널 추가
+	        p_contents.add(myinfo.getMainPanel());
+	        // 화면 갱신
+	        p_contents.revalidate();
+	        p_contents.repaint();
 		}else if (e.getSource()==btn_logout) {
 			//로그아웃 버튼 이벤트
 		}
