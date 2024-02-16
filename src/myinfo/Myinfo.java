@@ -2,10 +2,13 @@ package myinfo;
 
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class Myinfo extends JPanel {
+public class Myinfo extends JPanel implements ActionListener{
 
 	JButton btn_update, btn_save;
 	JPanel p_contents, p_chat;
@@ -28,8 +31,8 @@ public class Myinfo extends JPanel {
 
 		// 회원정보 라벨
 		p_contents.add(lbl_myinfo = new JLabel("회원정보"));
-		lbl_myinfo.setFont(new Font("맑은 고딕", Font.BOLD, 18));
-		lbl_myinfo.setBounds(35, 38, 75, 30);
+		lbl_myinfo.setFont(new Font("맑은 고딕", Font.BOLD, 20));
+		lbl_myinfo.setBounds(35, 38, 85, 30);
 
 		// 내정보에 필요한 내용 라벨
 		int y1 = 0;
@@ -39,7 +42,6 @@ public class Myinfo extends JPanel {
 			lbl_info.setBackground(new Color(62, 192, 196)); // 버튼 배경색
 			lbl_info.setFont(new Font("맑은 고딕", Font.PLAIN, 17)); // 폰트 설정
 			y1 += 80; // 각 버튼 y축(높이) 지정
-			// lbl_info.addActionListener(this);
 		} // --for--
 
 		// 내 정보에 필요한 텍스트 필드와 콤보박스
@@ -50,7 +52,7 @@ public class Myinfo extends JPanel {
 			tf_info[i].setFont(new Font("맑은 고딕", Font.PLAIN, 16)); // 폰트설정
 			tf_info[i].setEnabled(false); // 텍스트 필드 비활성화
 			y2 += 80; // y축 설정
-			//tf_info[i].addActionListener(this);
+			
 		} // --for--
 
 		p_contents.add(tf_phone = new JTextField()); // 휴대전화 텍스트필드
@@ -61,18 +63,24 @@ public class Myinfo extends JPanel {
 		p_contents.add(cb_mobile = new JComboBox()); // 통신사 콤보박스
 		cb_mobile.setBackground(Color.white); // 배경색 설정
 		cb_mobile.setBounds(265, 468, 82, 35); // 위치, 사이즈
+		cb_mobile.setEnabled(false);//콤보박스 비활성화
 
+
+		
 		// 수정, 저장 버튼
 		p_contents.add(btn_update = new JButton("수정하기"));
 		btn_update.setFont(new Font("맑은 고딕", Font.BOLD, 16)); // 폰트 설정
 		btn_update.setBackground(Color.white);
 		btn_update.setBounds(60, 525, 135, 48);
+		btn_update.addActionListener(this);//액션 리스너
 
+		
 		p_contents.add(btn_save = new JButton("저장하기"));
 		btn_save.setForeground(new Color(255, 255, 255));
 		btn_save.setFont(new Font("맑은 고딕", Font.BOLD, 16)); // 폰트 설정
 		btn_save.setBackground(new Color(62, 192, 196));
 		btn_save.setBounds(212, 525, 135, 48);
+		btn_save.addActionListener(this);//액션 리스너
 
 		// 채팅 안내 & 버튼
 		p_contents.add(p_chat = new JPanel());
@@ -94,9 +102,37 @@ public class Myinfo extends JPanel {
 		btn_chat.setFocusPainted(false); // 선택 시 테두리 없애기
 		btn_chat.setBackground(Color.white); // 배경색 설정
 		btn_chat.setBounds(97, 192, 145, 130); // 위치, 사이즈
+		btn_chat.addActionListener(this);//액션 리스너
+		
 		setVisible(true);
 	}// --MainInfo--
 	
+	public void btnFcn(ActionListener ac) {
+		btn_update.addActionListener(ac);//액션 리스너
+		btn_save.addActionListener(ac);//액션 리스너
+		btn_chat.addActionListener(ac);//액션 리스너
+		
+	}
+	
+	
+	public void actionPerformed(ActionEvent e) {
+		Object obj = e.getSource();
+		if (obj==btn_update) {
+			for (int i = 0; i < tf_info.length; i++) {
+				tf_info[i].setEnabled(true);
+			}
+			tf_phone.setEnabled(true);
+			cb_mobile.setEnabled(true);
+		}else if (obj==btn_save) {
+			
+		}else if (obj==btn_chat) {
+			ChatClient chatClient = new ChatClient();
+	        chatClient.setVisible(true);
+		}
+	}
+	
+	
+	//패널 전환하기 위함
 	public JPanel getMainPanel() {
         return p_contents;
     }
