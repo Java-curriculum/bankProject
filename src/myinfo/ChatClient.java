@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -19,19 +20,19 @@ import javax.swing.JTextField;
 
 import javax.swing.JButton;
 
-/*한글 깨질 때 : properties-MS949로 변경*/
 
 public class ChatClient extends JFrame
-implements ActionListener {
+implements ActionListener, Runnable {
 
-	JList li_ChatMb;
-	JTextField tf_Write; //참가자, 채팅작성
+	JList li_ChatMb; //참가자
+	JTextField tf_Write; // 채팅작성
 	JButton btn_send, btn_close;  // 전송, 상담종료 버튼
 	JTextArea ta_Chat; // 채팅 내용창
 	JLabel lbl_ChatMb; // 라벨(참가자명, )
 	Socket sock;
 	BufferedReader in;
 	PrintWriter out;
+	String id;
 	
 	public ChatClient() {
 		//프레임 창 설정
@@ -93,40 +94,25 @@ implements ActionListener {
 		add(btn_close);
 		
 		//버튼 이벤트 메소드 호출
-		btn_send.addActionListener(this);
-		btn_close.addActionListener(this);
+		tf_Write.addActionListener(this); //엔터키 액션리스너
+		btn_send.addActionListener(this); //전송 버튼 액션 리스너
+		btn_close.addActionListener(this); // 상담 종료 버튼 액션 리스너
 				
 		setVisible(true);
 	}
 	
 	public void run() {
 		try {
-			String host = "127.0.0.1";
-			int port = 8002;
-			connect(host,port);
 			while(true) {
-				ta_Chat.append(in.readLine()); // 첫 번째 라인을 읽어서 텍스트 영역에 추가
-				String line = in.readLine();
-				if(line==null)
-					break;
-				else
-					routine(line);
-			}//--while--
-		}catch (Exception e) {
+				ta_Chat.append(in.readLine()+"\n");
+				tf_Write.requestFocus();
+			}
+		} catch (Exception e) {
+			System.err.println("Error in run");
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}//--run--
-	
-	
-	public void routine(String line) {
-		int idx = line.indexOf(ChatProtocol.MODE);
-		String cmd = line.substring(0,idx);
-		String data = line.substring(idx+1);
-		
-		if (cmd.equals(ChatProtocol.CHAT)|| cmd.equals(ChatProtocol.CHATALL)) {
-			ta_Chat.append(data+"\n");
-		}
-	} //--routine--
 	
 	
 	public void connect(String host, int port) {
@@ -135,27 +121,37 @@ implements ActionListener {
 			in = new BufferedReader(
 					new InputStreamReader(sock.getInputStream()));
 			out = new PrintWriter(sock.getOutputStream(),true);
+			ta_Chat.append(in.readLine()+"\n");
+			tf_Write.requestFocus();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		//Thread Start -> run 메서드 호출
+		new Thread(this).start();
 	}//--connect--
 	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource()==btn_close) {
-			this.dispose();
-		}else if (e.getSource()==btn_send) {
-			String str = tf_Write.getText();
-			sendMessage(ChatProtocol.CHATALL + ChatProtocol.MODE+str);
+		Object obj = e.getSource();
+		if (obj==btn_close) {
+			 this.dispose();	
+		}else if (obj==btn_send || obj==tf_Write) { //전송 버튼 또는 텍스트필(엔터)
+			String str = tf_Write.getText().trim();
+			if (str.isEmpty())
+				return; //서버로 전송하지 않고 메소드 종료
+			if (id==null) {
+				//처음 아이디 입력
+				id=str;
+				setTitle(getTitle()+ "-" + "[" + id + "]");
+				ta_Chat.setText("채팅상담을 시작합니다.\n");
+				}
+			out.println(str);//서버전송
+			tf_Write.setText("");
+			tf_Write.requestFocus();
 			}
 		}//--actionPerformed--
 	
-	
-	public void sendMessage(String msg) {
-		out.println(msg); // Client -> Server
-	}	
-		
 	public static void main(String[] args) {
 		new ChatClient();
 	}

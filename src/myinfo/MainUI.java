@@ -73,8 +73,6 @@ public class MainUI extends JFrame implements ActionListener{
 		p_contents.setBounds(198, 21, 826, 620);
 		p_contents.setLayout(null); //레이아웃 관리자 비활성화 후 직접 배치
 		
-		
-		
 		setVisible(true);
 		
 	}//--MainInfo--

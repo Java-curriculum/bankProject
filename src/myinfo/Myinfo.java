@@ -44,27 +44,8 @@ public class Myinfo extends JPanel implements ActionListener{
 			y1 += 80; // 각 버튼 y축(높이) 지정
 		} // --for--
 
-		// 내 정보에 필요한 텍스트 필드와 콤보박스
-		int y2 = 0;
-		for (int i = 0; i < tf_info.length; i++) {
-			p_contents.add(tf_info[i] = new JTextField());
-			tf_info[i].setBounds(60, 147 + y2, 290, 35); // 위치, 사이즈
-			tf_info[i].setFont(new Font("맑은 고딕", Font.PLAIN, 16)); // 폰트설정
-			tf_info[i].setEnabled(false); // 텍스트 필드 비활성화
-			y2 += 80; // y축 설정
-			
-		} // --for--
-
-		p_contents.add(tf_phone = new JTextField()); // 휴대전화 텍스트필드
-		tf_phone.setFont(new Font("맑은 고딕", Font.PLAIN, 16)); // 폰트 설정
-		tf_phone.setEnabled(false); // 텍스트 필드 비활성화
-		tf_phone.setBounds(60, 468, 200, 35); // 위치, 사이즈
-
-		p_contents.add(cb_mobile = new JComboBox()); // 통신사 콤보박스
-		cb_mobile.setBackground(Color.white); // 배경색 설정
-		cb_mobile.setBounds(265, 468, 82, 35); // 위치, 사이즈
-		cb_mobile.setEnabled(false);//콤보박스 비활성화
-
+		// 텍스트 필드 메소드 호출
+		infoTf();
 
 		
 		// 수정, 저장 버튼
@@ -106,15 +87,33 @@ public class Myinfo extends JPanel implements ActionListener{
 		
 		setVisible(true);
 	}// --MainInfo--
-	
-	public void btnFcn(ActionListener ac) {
-		btn_update.addActionListener(ac);//액션 리스너
-		btn_save.addActionListener(ac);//액션 리스너
-		btn_chat.addActionListener(ac);//액션 리스너
-		
-	}
+
 	
 	
+	//다른 클래스에서 텍스트 필드 값처리를 위해 메소드로 정의
+	protected void infoTf() {
+        int y2 = 0;
+        for (int i = 0; i < tf_info.length; i++) {
+            p_contents.add(tf_info[i] = new JTextField());
+            tf_info[i].setBounds(60, 147 + y2, 290, 35); // 위치, 사이즈
+            tf_info[i].setFont(new Font("맑은 고딕", Font.PLAIN, 16)); // 폰트설정
+            tf_info[i].setEnabled(false); // 텍스트 필드 비활성화
+            y2 += 80; // y축 설정
+        }//--for문
+        
+        p_contents.add(tf_phone = new JTextField()); // 휴대전화 텍스트필드
+		tf_phone.setFont(new Font("맑은 고딕", Font.PLAIN, 16)); // 폰트 설정
+		tf_phone.setEnabled(false); // 텍스트 필드 비활성화
+		tf_phone.setBounds(60, 468, 200, 35); // 위치, 사이즈
+
+		p_contents.add(cb_mobile = new JComboBox()); // 통신사 콤보박스
+		cb_mobile.setBackground(Color.white); // 배경색 설정
+		cb_mobile.setBounds(265, 468, 82, 35); // 위치, 사이즈
+		cb_mobile.setEnabled(false);//콤보박스 비활성화
+    }
+	
+	
+	//버튼 액션 이벤트
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		if (obj==btn_update) {
@@ -127,9 +126,11 @@ public class Myinfo extends JPanel implements ActionListener{
 			
 		}else if (obj==btn_chat) {
 			ChatClient chatClient = new ChatClient();
-	        chatClient.setVisible(true);
-		}
+            chatClient.connect("127.0.0.1", 8002); // 서버에 연결
+            chatClient.setVisible(true); // 채팅 클라이언트 창 표시
 	}
+	
+}//--actionPerformed--
 	
 	
 	//패널 전환하기 위함
