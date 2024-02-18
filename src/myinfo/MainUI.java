@@ -12,11 +12,10 @@ public class MainUI extends JFrame implements ActionListener{
 	JPanel contentPane/*창*/, p_left/*왼쪽메뉴*/, p_contents/*본문*/,Myinfo;
 	JLabel lbl_logo;
 	ImageIcon img_logo;
-	
-	
-	public MainUI() {
-		
-		
+	String info_id ;
+
+	public MainUI(String id) {
+		info_id = id;
 		setTitle("Simple Exchange"); //창 타이틀
 		setSize(1050,700);  // 창 사이즈
 		setLocationRelativeTo(null); // 창 가운데 띄움
@@ -93,7 +92,7 @@ public class MainUI extends JFrame implements ActionListener{
 		}else if (e.getSource()==btn_menu[4]) {
 			//내정보 버튼 이벤트
 			p_contents.removeAll();
-			Myinfo myinfo = new Myinfo();
+			Myinfo myinfo = new Myinfo(info_id);
 	        // MainUI의 p_contents 패널에 rate_pan 패널 추가
 	        p_contents.add(myinfo.getMainPanel());
 	        // 화면 갱신
@@ -105,8 +104,4 @@ public class MainUI extends JFrame implements ActionListener{
 	}//--actionPerformed--
 	
 	
-	public static void main(String[] args) {
-			new MainUI();
-			
-	}
 }
