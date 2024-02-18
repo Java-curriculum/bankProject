@@ -33,6 +33,8 @@ implements ActionListener, Runnable {
 	BufferedReader in;
 	PrintWriter out;
 	String id;
+	String[] name_list = {"user_name", "admin"};
+	
 	
 	public ChatClient() {
 		//프레임 창 설정
@@ -58,7 +60,7 @@ implements ActionListener, Runnable {
 		
 		//상담자명 JList로 출력
 		/*name_list에 채팅 참여한 user와 admin 이름 삽입*/
-		String[] name_list= {"user_name", "admin"}; //임시 리스트
+		 //임시 리스트
 		JList<String> li_ChatMb = new JList<>(name_list);
 		li_ChatMb.setFont(new Font("맑은 고딕", Font.PLAIN, 12)); //폰트 설정
 		li_ChatMb.setBounds(0, 35, 372, 42); //위치, 사이즈
@@ -129,6 +131,12 @@ implements ActionListener, Runnable {
 		//Thread Start -> run 메서드 호출
 		new Thread(this).start();
 	}//--connect--
+	
+	public void setList(String user_id) {
+		name_list[0] = user_id;
+	}
+	
+	
 	
 	
 	@Override

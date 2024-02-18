@@ -10,6 +10,7 @@ import java.util.Vector;
 
 
 public class ChatServer {
+	String user_id;
 	public static final int PORT = 8002;
 	ServerSocket server;
 	Vector<ClientThread> vc;

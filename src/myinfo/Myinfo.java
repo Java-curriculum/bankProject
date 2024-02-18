@@ -4,6 +4,8 @@ package myinfo;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -20,9 +22,15 @@ public class Myinfo extends JPanel implements ActionListener{
 	JTextArea ta_chatGuide;
 	JButton btn_chat;
 	ImageIcon img_chat;
+	MyinfoDAO dao = new MyinfoDAO();
+	String user_id;
+	Userbean User_data;
+	String [] Telecom_data = {"SKT","KT","LG U+","알뜰폰"};
+	int cnt = 0;
 	
-	public Myinfo() {
+	public Myinfo(String id) {
 		//패널 삽입
+		user_id = id;
 		p_contents = new JPanel();
 		p_contents.setBorder(null);
 		p_contents.setBackground(Color.white); // 패널 배경색
@@ -47,7 +55,6 @@ public class Myinfo extends JPanel implements ActionListener{
 		// 텍스트 필드 메소드 호출
 		infoTf();
 
-		
 		// 수정, 저장 버튼
 		p_contents.add(btn_update = new JButton("수정하기"));
 		btn_update.setFont(new Font("맑은 고딕", Font.BOLD, 16)); // 폰트 설정
@@ -90,25 +97,56 @@ public class Myinfo extends JPanel implements ActionListener{
 
 	
 	
-	//다른 클래스에서 텍스트 필드 값처리를 위해 메소드로 정의
+	//텍스트 필드 db데이터 삽입
 	protected void infoTf() {
         int y2 = 0;
+		try {
+			User_data = dao.select_user(user_id);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		//이름, id, 비밀번호, 가상계좌, 휴대번호, 통신사 값 가져오기
+		ArrayList<String> data = new ArrayList<String>();
+		data.add(User_data.getName());
+		data.add(User_data.getId());
+		data.add(User_data.getPw());
+		data.add(User_data.getAccount());
+		data.add(User_data.getPhone());
+		data.add(User_data.getTelecom());
+		
+		//이름, id, 비밀번호, 가상계좌 텍스트 필드
         for (int i = 0; i < tf_info.length; i++) {
             p_contents.add(tf_info[i] = new JTextField());
             tf_info[i].setBounds(60, 147 + y2, 290, 35); // 위치, 사이즈
             tf_info[i].setFont(new Font("맑은 고딕", Font.PLAIN, 16)); // 폰트설정
+            tf_info[i].setText(data.get(i));
             tf_info[i].setEnabled(false); // 텍스트 필드 비활성화
             y2 += 80; // y축 설정
         }//--for문
         
-        p_contents.add(tf_phone = new JTextField()); // 휴대전화 텍스트필드
+        //휴대번호 텍스트 필드
+        p_contents.add(tf_phone = new JTextField());
 		tf_phone.setFont(new Font("맑은 고딕", Font.PLAIN, 16)); // 폰트 설정
 		tf_phone.setEnabled(false); // 텍스트 필드 비활성화
 		tf_phone.setBounds(60, 468, 200, 35); // 위치, 사이즈
-
+		tf_phone.setText(data.get(4));
+		
+		//통신사 콤보박스
 		p_contents.add(cb_mobile = new JComboBox()); // 통신사 콤보박스
+		for(int i = 0 ; i < Telecom_data.length; i++) {
+			cb_mobile.addItem(Telecom_data[i]); // "SKT","KT","LG U+","알뜰폰"
+			
+			//db에서 받아온 회원정보(User_data)가 콤보박스 통신사 데이터와 일치하면 그것을 출력하라
+			if(User_data.getTelecom().equals(Telecom_data[i])) {
+				System.out.println(Telecom_data[i]);
+				cnt = i;
+				cb_mobile.setSelectedIndex(i);
+			}
+		}
 		cb_mobile.setBackground(Color.white); // 배경색 설정
-		cb_mobile.setBounds(265, 468, 82, 35); // 위치, 사이즈
+		cb_mobile.setBounds(265, 468, 82, 35); //위치, 사이즈
 		cb_mobile.setEnabled(false);//콤보박스 비활성화
     }
 	
@@ -116,22 +154,39 @@ public class Myinfo extends JPanel implements ActionListener{
 	//버튼 액션 이벤트
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
-		if (obj==btn_update) {
-			for (int i = 0; i < tf_info.length; i++) {
-				tf_info[i].setEnabled(true);
-			}
+		if (obj==btn_update) { //수정하기 버튼
+			//저장 버튼 클릭 시 이름, 비밀번호, 휴대번호, 통신사 활성화
+			tf_info[0].setEnabled(true);
+			tf_info[2].setEnabled(true);
 			tf_phone.setEnabled(true);
 			cb_mobile.setEnabled(true);
-		}else if (obj==btn_save) {
+			
+		}else if (obj==btn_save) { //저장하기 버튼
+			ArrayList<String> Update_data = new ArrayList<>();
+			Update_data.add(tf_info[0].getText());
+			Update_data.add(tf_info[2].getText());
+			Update_data.add(tf_phone.getText());
+			String selectedItem = (String) cb_mobile.getSelectedItem();
+			Update_data.add(selectedItem);
+			Update_data.add(user_id);
+			
+			//저장 버튼 클릭 시 이름, 비밀번호, 휴대번호, 통신사 비활성화
+			tf_info[0].setEnabled(false);
+			tf_info[2].setEnabled(false);
+			tf_phone.setEnabled(false);
+			cb_mobile.setEnabled(false);
+			dao.update_user(Update_data); //db에 수정 반영
 			
 		}else if (obj==btn_chat) {
 			ChatClient chatClient = new ChatClient();
+			chatClient.setList(user_id);
+			System.out.println(user_id);
             chatClient.connect("127.0.0.1", 8002); // 서버에 연결
             chatClient.setVisible(true); // 채팅 클라이언트 창 표시
+
 	}
 	
 }//--actionPerformed--
-	
 	
 	//패널 전환하기 위함
 	public JPanel getMainPanel() {

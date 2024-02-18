@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.*;
 
 public class DB_Connect {
-    public static void main(String[] args) {
-        // MySQL 데이터베이스 연결 정보
+	public Connection getConnection() {
+		 // MySQL 데이터베이스 연결 정보
         String url = "jdbc:mysql://localhost:3306/hse"; // 데이터베이스 URL
         String username = "root"; // 데이터베이스 사용자 이름
         String password = "1234"; // 데이터베이스 암호
@@ -30,15 +30,7 @@ public class DB_Connect {
         } catch (ClassNotFoundException e) {
             System.out.println("JDBC 드라이버를 찾을 수 없습니다.");
             e.printStackTrace();
-        } finally {
-            // 연결 닫기
-            try {
-                if (conn != null && !conn.isClosed()) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
-    }
+        return conn; // 연결 반환
+	}
 }
