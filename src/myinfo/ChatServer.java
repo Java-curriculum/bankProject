@@ -81,9 +81,10 @@ public class ChatServer {
 			@Override
 			public void run() {
 				try {
+					/*
 					//client에게 최초 보내는 메세지
 					out.println("사용하실 아이디를 입력하세요");
-					//client에서 보낸 아이디를 저장
+					//client에서 보낸 아이디를 저장*/
 					id = in.readLine();
 					//접속한 모든 client에게 welocome 메시지 보내기
 					sendAllMessage("[" + id + "]님이 입장하였습니다.");
