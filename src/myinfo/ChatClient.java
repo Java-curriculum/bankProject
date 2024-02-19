@@ -20,21 +20,18 @@ import javax.swing.JTextField;
 
 import javax.swing.JButton;
 
-
 public class ChatClient extends JFrame
 implements ActionListener, Runnable {
-
-	JList li_ChatMb; //참가자
+	//JList li_ChatMb; //참가자
 	JTextField tf_Write; // 채팅작성
 	JButton btn_send, btn_close;  // 전송, 상담종료 버튼
-	JTextArea ta_Chat; // 채팅 내용창
+	JTextArea ta_Chat, ta_ChatMb; // 채팅 내용창
 	JLabel lbl_ChatMb; // 라벨(참가자명, )
 	Socket sock;
 	BufferedReader in;
 	PrintWriter out;
 	String id;
-	String[] name_list = {"user_name", "admin"};
-	
+	String[] name_list = {"user_name"};
 	
 	public ChatClient() {
 		//프레임 창 설정
@@ -58,13 +55,13 @@ implements ActionListener, Runnable {
 		lbl_ChatMb.setFont(new Font("맑은 고딕", Font.BOLD, 14)); //폰트 설정
 		p1.add(lbl_ChatMb);
 		
-		//상담자명 JList로 출력
-		/*name_list에 채팅 참여한 user와 admin 이름 삽입*/
-		 //임시 리스트
-		JList<String> li_ChatMb = new JList<>(name_list);
-		li_ChatMb.setFont(new Font("맑은 고딕", Font.PLAIN, 12)); //폰트 설정
-		li_ChatMb.setBounds(0, 35, 372, 42); //위치, 사이즈
-		p1.add(li_ChatMb);
+		//상담 안내 문구
+		ta_ChatMb = new JTextArea(" 안녕하세요! Chat 상담입니다.\n 잠시만 기다려주시면 상담사가 연결됩니다."); //채팅 보여줌
+		ta_ChatMb.setBounds(0, 35, 372, 42); //위치, 사이즈
+		ta_ChatMb.setBackground(new Color(245,255,250)); //패널 배경색
+		ta_ChatMb.setFont(new Font("맑은 고딕", Font.BOLD, 13)); //폰트 설정
+		p1.add(ta_ChatMb);
+		
 		
 		//채팅창
 		JPanel p2 = new JPanel();
@@ -120,9 +117,11 @@ implements ActionListener, Runnable {
 	public void connect(String host, int port) {
 		try {
 			sock = new Socket(host, port);
+			
 			in = new BufferedReader(
 					new InputStreamReader(sock.getInputStream()));
 			out = new PrintWriter(sock.getOutputStream(),true);
+			out.println(id);
 			ta_Chat.append(in.readLine()+"\n");
 			tf_Write.requestFocus();
 		} catch (Exception e) {
@@ -132,17 +131,17 @@ implements ActionListener, Runnable {
 		new Thread(this).start();
 	}//--connect--
 	
+	//user_id 받아와 리스트[0]번째에 넣음
 	public void setList(String user_id) {
-		name_list[0] = user_id;
+		id = user_id;
 	}
-	
-	
 	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		if (obj==btn_close) {
+			 out.println("상대방이 상담을 종료했습니다.");
 			 this.dispose();	
 		}else if (obj==btn_send || obj==tf_Write) { //전송 버튼 또는 텍스트필(엔터)
 			String str = tf_Write.getText().trim();
@@ -151,7 +150,7 @@ implements ActionListener, Runnable {
 			if (id==null) {
 				//처음 아이디 입력
 				id=str;
-				setTitle(getTitle()+ "-" + "[" + id + "]");
+				//setTitle(getTitle()+ "-" + "[" + id + "]");
 				ta_Chat.setText("채팅상담을 시작합니다.\n");
 				}
 			out.println(str);//서버전송

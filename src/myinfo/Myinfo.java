@@ -126,6 +126,7 @@ public class Myinfo extends JPanel implements ActionListener{
             y2 += 80; // y축 설정
         }//--for문
         
+        
         //휴대번호 텍스트 필드
         p_contents.add(tf_phone = new JTextField());
 		tf_phone.setFont(new Font("맑은 고딕", Font.PLAIN, 16)); // 폰트 설정
@@ -181,9 +182,8 @@ public class Myinfo extends JPanel implements ActionListener{
 			ChatClient chatClient = new ChatClient();
 			chatClient.setList(user_id);
 			System.out.println(user_id);
-            chatClient.connect("127.0.0.1", 8002); // 서버에 연결
+            chatClient.connect("172.17.108.56", 8002); // 서버연결(개인 ip, 포트넘버)
             chatClient.setVisible(true); // 채팅 클라이언트 창 표시
-
 	}
 	
 }//--actionPerformed--
