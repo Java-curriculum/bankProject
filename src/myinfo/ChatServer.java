@@ -87,7 +87,7 @@ public class ChatServer {
 					//client에서 보낸 아이디를 저장*/
 					id = in.readLine();
 					//접속한 모든 client에게 welocome 메시지 보내기
-					sendAllMessage("[" + id + "]님이 입장하였습니다.");
+					sendAllMessage("<" + id + ">님이 챗상담을 시작했습니다.");
 					String line = "";
 					
 					
@@ -99,7 +99,7 @@ public class ChatServer {
 							removeClient(this);
 							break;
 						}
-						sendAllMessage("[" + id + "]" + line);
+						sendAllMessage(id + " : " + line);
 				} //--while--
 					in.close();
 					out.close();
